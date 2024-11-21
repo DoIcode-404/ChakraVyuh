@@ -1,3 +1,4 @@
+import 'package:chakravyuh/pages/login.dart';
 import 'package:flutter/material.dart';
 
 import 'check_box_page.dart';
@@ -12,8 +13,10 @@ class HomePage extends StatelessWidget {
         decoration: const BoxDecoration(
           gradient: RadialGradient(
             colors: [
-              Color(0xFF1A2C5B),
+              Color.fromARGB(255, 4, 41, 68),
               Color(0xFF071223),
+
+              //Color.fromARGB(255, 2, 34, 59),
             ],
             stops: [0.0, 1.0],
             center: Alignment.center,
@@ -22,13 +25,13 @@ class HomePage extends StatelessWidget {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
+                  padding: const EdgeInsets.only(top: 15.0),
                   child: Image.asset(
                     'assets/images/Logo-Frame.png',
                     height: 80,
@@ -43,12 +46,12 @@ class HomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'ShantellSans',
-                    fontSize: 20,
+                    fontSize: 23,
                     color: Colors.white,
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
 
                 Align(
                   alignment: Alignment.center,
@@ -60,7 +63,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 40),
 
                 // Get Started button
                 ElevatedButton(
@@ -73,7 +76,8 @@ class HomePage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF14224A), // Button color
+                    backgroundColor:
+                        const Color.fromARGB(255, 25, 57, 82), // Button color
                     padding: const EdgeInsets.symmetric(
                         horizontal: 40, vertical: 15),
                     shape: RoundedRectangleBorder(
@@ -85,30 +89,34 @@ class HomePage extends StatelessWidget {
                     'GET STARTED',
                     style: TextStyle(
                       fontFamily: 'ShantellSans',
-                      fontSize: 24,
+                      fontSize: 23,
                       color: Colors.white,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 25),
 
                 // Login prompt text
                 TextButton(
                   onPressed: () {
-                    // Navigate to login screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                    );
                   },
                   child: const Text(
                     'Already have an account? Log in',
                     style: TextStyle(
                       fontFamily: 'ShantellSans',
-                      fontSize: 17,
+                      fontSize: 19,
                       color: Colors.white,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 5),
+                const SizedBox(height: 35),
 
                 // Terms and Privacy links
                 Row(
