@@ -68,19 +68,56 @@ class _CheckBoxPageState extends State<CheckBoxPage> {
                   (index) => Container(
                     margin: const EdgeInsets.symmetric(vertical: 5.0),
                     padding: const EdgeInsets.all(12.0),
+                    // decoration: BoxDecoration(
+                    //   color: const Color.fromARGB(255, 12, 16, 34)
+                    //       .withOpacity(0.8), // Box background color
+                    //   borderRadius: BorderRadius.circular(15.0),
+                    //   boxShadow: [
+                    //     BoxShadow(
+                    //       color: const Color.fromARGB(255, 246, 201, 201)
+                    //           .withOpacity(0.3),
+                    //       blurRadius: 8,
+                    //       offset: const Offset(0, 4),
+                    //     ),
+                    //   ],
+                    // ),
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 12, 16, 34)
                           .withOpacity(0.8), // Box background color
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: const Border(
+                        top: BorderSide(
+                          color: Color(
+                              0xFFBCC4FF), // Light blue color for the top border
+                          width: 1, // Thin top border
+                        ),
+                        left: BorderSide(
+                          color: Color(
+                              0xFFBCC4FF), // Light blue color for the left border
+                          width: 1, // Thin left border
+                        ),
+                        right: BorderSide(
+                          color: Color(
+                              0xFFBCC4FF), // Light blue color for the right border
+                          width: 1, // Thin right border
+                        ),
+                        bottom: BorderSide(
+                          color: Color(
+                              0xFFBCC4FF), // Light blue color for the bottom border
+                          width: 4, // Thicker bottom border
+                        ),
+                      ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color.fromARGB(255, 246, 201, 201)
+                          color: const Color(0xFFBCC4FF)
+                              // .fromARGB(255, 201, 220, 246)
                               .withOpacity(0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
                         ),
                       ],
                     ),
+
                     child: CheckboxListTile(
                       value: _checkboxValues[index],
                       onChanged: (bool? value) {
