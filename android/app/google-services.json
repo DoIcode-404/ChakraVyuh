@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "338945194705",
+    "project_id": "chakravyuh-astrology-app",
+    "storage_bucket": "chakravyuh-astrology-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338945194705:android:972f972045a24488bae3f0",
+        "android_client_info": {
+          "package_name": "com.example.chakravyuh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa0QfdZx3S3VoGpq_plHIMLp4fwwUD_30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

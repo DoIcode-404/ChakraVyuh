@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
 
                 Align(
                   alignment: Alignment.center,
@@ -64,7 +64,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                const SizedBox(height: 15),
 
                 // Get Started button
                 ElevatedButton(
@@ -96,7 +96,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
 
                 // Login prompt text
                 TextButton(
@@ -117,7 +117,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 35),
+                const SizedBox(height: 5),
 
                 // Terms and Privacy links
                 Row(
