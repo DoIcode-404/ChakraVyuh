@@ -15,6 +15,16 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.0.14
 
+  http: ^1.2.2
+
+  curved_navigation_bar: ^1.0.6
+  convex_bottom_bar: ^3.2.0
+  firebase_auth: ^5.3.3
+  firebase_core: ^3.8.0
+  cloud_firestore: ^5.5.0
+  shared_preferences: ^2.3.3
+  provider: ^6.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -25,9 +35,26 @@ flutter:
   assets:
     - assets/images/Theme-img.png
     - assets/images/Logo-Frame.png
-    - assets/images/log.jpg
+    - assets/images/date.png
     - assets/images/google.png
-    - assets/images/image.png
+    - assets/images/time.png
+    - assets/images/profile.png
+    - assets/images/capricon.png
+    - assets/images/location.png
+    - assets/icons/arrow.svg
+    - assets/icons/dott.svg
+    - assets/images/aeris.jpg
+    - assets/images/taurus.jpg
+    - assets/images/gemini.jpg
+    - assets/images/cancer.jpg
+    - assets/images/leo.jpg
+    - assets/images/virgo.jpg
+    - assets/images/libra.jpg
+    - assets/images/scorpio.jpg
+    - assets/images/sagittarius.jpg
+    - assets/images/capricon.jpg
+    - assets/images/Aquarius.jpg
+    - assets/images/Pisces.jpg
 
   fonts:
     - family: ShantellSans
