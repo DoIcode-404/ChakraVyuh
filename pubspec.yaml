@@ -28,6 +28,19 @@ flutter:
     - assets/images/log.jpg
     - assets/images/google.png
     - assets/images/image.png
+    - assets/images/guide.jpg
+    - assets/aries.png
+    - assets/taurus.png
+    - assets/gemini.png
+    - assets/cancer.png
+    - assets/leo.png
+    - assets/virgo.png
+    - assets/libra.png
+    - assets/scorpio.png
+    - assets/sagittarius.png
+    - assets/capricorn.png
+    - assets/aquarius.png
+    - assets/pisces.png
 
   fonts:
     - family: ShantellSans

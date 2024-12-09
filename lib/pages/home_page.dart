@@ -1,7 +1,8 @@
 import 'package:chakravyuh/pages/login.dart';
 import 'package:flutter/material.dart';
-
+import 'astroGuide.dart';
 import 'check_box_page.dart';
+import 'birthChart.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -72,7 +73,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CheckBoxPage()),
+                          builder: (context) => const AstroGuidePage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(

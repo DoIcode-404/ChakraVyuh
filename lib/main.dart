@@ -1,3 +1,5 @@
+import 'package:chakravyuh/pages/birthChart.dart';
+import 'package:chakravyuh/pages/horoscope.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/home_page.dart';
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'ShantellSans'),
-      home: const HomePage(),
+      home: const HoroscopeScreen(),
     );
   }
 }
