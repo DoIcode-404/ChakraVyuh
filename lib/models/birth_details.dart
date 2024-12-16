@@ -86,7 +86,7 @@ class BirthDetails {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'userId': userId, // Include userId
-      'birthDate': birthDate.toIso8601String(),
+      'birthDate': birthDate.toIso8601String().split('T')[0],
       'birthTime':
           '${birthTime.hour.toString().padLeft(2, '0')}:${birthTime.minute.toString().padLeft(2, '0')}',
       'latitude': latitude,

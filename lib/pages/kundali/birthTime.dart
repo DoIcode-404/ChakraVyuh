@@ -1,59 +1,38 @@
-import 'package:chakravyuh/pages/birthTime.dart';
+import 'package:chakravyuh/models/birth_details.dart';
+import 'package:chakravyuh/pages/kundali/location.dart';
 import 'package:flutter/material.dart';
 
-import '../models/birth_details.dart';
-
-class DateBirth extends StatefulWidget {
-  const DateBirth({super.key, required this.birthDetails});
+class BirthTime extends StatefulWidget {
+  const BirthTime({super.key, required this.birthDetails});
   final BirthDetails birthDetails;
 
   @override
-  _DateBirthState createState() => _DateBirthState();
+  _BirthTimeState createState() => _BirthTimeState();
 }
 
-class _DateBirthState extends State<DateBirth> {
+class _BirthTimeState extends State<BirthTime> {
   late BirthDetails birthDetails;
 
   @override
   void initState() {
     super.initState();
-    // Copying the received birthDetails to update later
+    // Copy of the received birthDetails to update later
     birthDetails = widget.birthDetails;
   }
 
-  int selectedDay = 1;
-  int selectedMonth = 1;
-  int selectedYear = 2023;
+  int selectedHour = 1;
+  int selectedMinute = 0;
+  String selectedPeriod = 'AM';
 
-  final List<String> monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ];
-
-  int _getDaysInMonth(int month, int year) {
-    if (month == 2) {
-      return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) ? 29 : 28;
-    }
-    return [4, 6, 9, 11].contains(month) ? 30 : 31;
-  }
+  final List<int> hours = List<int>.generate(24, (index) => index + 1);
+  final List<int> minutes = List<int>.generate(60, (index) => index);
+  final List<String> periods = ['AM', 'PM'];
 
   @override
   Widget build(BuildContext context) {
-    final int maxDaysInMonth = _getDaysInMonth(selectedMonth, selectedYear);
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select Your DOB"),
+        title: Text("Select Your TOB"),
         backgroundColor: Color(0xFF071223),
         foregroundColor: Colors.white,
       ),
@@ -72,10 +51,10 @@ class _DateBirthState extends State<DateBirth> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/date.png', height: 200),
+                  Image.asset('assets/images/time.png', height: 200),
                   const SizedBox(height: 10),
                   const Text(
-                    'Set your birth date.',
+                    'At What Time Were You Born?',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 31,
@@ -84,7 +63,7 @@ class _DateBirthState extends State<DateBirth> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Your journey through the stars begins with the right date to unlock your cosmic destiny.',
+                    'Unlock your cosmic destiny by selecting the time you were born.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
@@ -100,33 +79,33 @@ class _DateBirthState extends State<DateBirth> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             _buildPicker(
-                              title: 'Day',
-                              itemCount: maxDaysInMonth,
-                              selectedIndex: selectedDay - 1,
+                              title: 'Hour',
+                              itemCount: hours.length,
+                              selectedIndex: selectedHour - 1,
                               onItemChanged: (index) =>
-                                  setState(() => selectedDay = index + 1),
+                                  setState(() => selectedHour = hours[index]),
                             ),
                             const SizedBox(width: 36),
                             _buildPicker(
-                              title: 'Month',
-                              itemCount: 12,
-                              selectedIndex: selectedMonth - 1,
-                              onItemChanged: (index) =>
-                                  setState(() => selectedMonth = index + 1),
+                              title: 'Minute',
+                              itemCount: minutes.length,
+                              selectedIndex: selectedMinute,
+                              onItemChanged: (index) => setState(
+                                  () => selectedMinute = minutes[index]),
                             ),
                             const SizedBox(width: 36),
                             _buildPicker(
-                              title: 'Year',
-                              itemCount: 200,
-                              selectedIndex: selectedYear - 1900,
-                              onItemChanged: (index) =>
-                                  setState(() => selectedYear = 1900 + index),
+                              title: 'Period',
+                              itemCount: periods.length,
+                              selectedIndex: selectedPeriod == 'AM' ? 0 : 1,
+                              onItemChanged: (index) => setState(
+                                  () => selectedPeriod = periods[index]),
                             ),
                           ],
                         ),
                         const SizedBox(height: 36),
                         Text(
-                          'Selected Date: $selectedDay/${selectedMonth.toString().padLeft(2, '0')}/$selectedYear',
+                          'Selected Time: ${selectedHour.toString().padLeft(2, '0')}:${selectedMinute.toString().padLeft(2, '0')} $selectedPeriod',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 23,
@@ -137,16 +116,16 @@ class _DateBirthState extends State<DateBirth> {
                         // Next button
                         ElevatedButton(
                           onPressed: () {
-                            //Updating the birthdetails with new birthdate using copywith
                             final updatedDetails = birthDetails.copyWith(
-                                birthDate: DateTime(
-                                    selectedYear, selectedMonth, selectedDay));
+                              birthTime: TimeOfDay(
+                                  hour: selectedHour, minute: selectedMinute),
+                            );
                             // Navigate to the next screen
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      BirthTime(birthDetails: updatedDetails)),
+                                  builder: (context) => LocationPage(
+                                      birthDetails: updatedDetails)),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -190,15 +169,15 @@ class _DateBirthState extends State<DateBirth> {
       children: [
         Text(
           title,
-          style: const TextStyle(
-              color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Colors.white, fontSize: 18),
         ),
+
         Container(
           height: 4,
-          width: 60,
+          width: 60, // Adjust width to match the title width
           color: Colors.white.withOpacity(0.4), // Light line color
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: 5), // Space between title and line
         SizedBox(
           height: 150,
           width: 70,
@@ -209,13 +188,12 @@ class _DateBirthState extends State<DateBirth> {
             onSelectedItemChanged: onItemChanged,
             childDelegate: ListWheelChildBuilderDelegate(
               builder: (context, index) {
-                // Distinct styles for selected and non-selected items
                 final bool isSelected = index == selectedIndex;
                 return Center(
                   child: Text(
-                    title == 'Month'
-                        ? monthNames[index]
-                        : '${index + (title == 'Year' ? 1900 : 1)}',
+                    title == 'Period'
+                        ? periods[index]
+                        : '${(title == 'Hour' ? hours[index] : minutes[index]).toString().padLeft(2, '0')}',
                     style: TextStyle(
                       color: isSelected ? Color(0xFFF1A7C4) : Colors.white70,
                       fontSize: isSelected ? 20 : 16,

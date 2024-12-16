@@ -1,13 +1,10 @@
 // lib/services/user_service.dart
 
-import 'package:chakravyuh/pages/navigation.dart';
+import 'package:chakravyuh/pages/auth/navigation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:chakravyuh/models/user.dart';
 import 'package:chakravyuh/models/birth_details.dart';
-import 'package:chakravyuh/pages/login.dart';
-import 'package:chakravyuh/pages/user_profile.dart';
 
 class UserService {
   Future<void> saveToFirestore(
@@ -26,6 +23,8 @@ class UserService {
       );
       return;
     }
+    // Assign the userId from the authenticated user to the BirthDetails object
+    final updatedDetailsWithUserId = updatedDetails.copyWith(userId: user.uid);
 
     final userDocRef =
         FirebaseFirestore.instance.collection('users').doc(user.uid);
@@ -43,7 +42,7 @@ class UserService {
       await userDocRef
           .collection('birthDetails')
           .doc('birthinfo')
-          .set(updatedDetails.toMap(), SetOptions(merge: true));
+          .set(updatedDetailsWithUserId.toMap(), SetOptions(merge: true));
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Birth details saved successfully')),

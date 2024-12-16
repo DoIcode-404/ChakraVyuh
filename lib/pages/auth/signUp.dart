@@ -5,11 +5,10 @@ import 'package:chakravyuh/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:google_sign_in/g, required BirthDetails updatedDetailsoogle_sign_in.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import '../services/user_service, required BirthDetails updatedDetails.dart';
-import '../services/user_service.dart';
+import '../../../../services/user_service.dart';
 import 'login.dart';
+// import '../login.dart';
 
 class Signup extends StatefulWidget {
   final BirthDetails updatedDetails;
