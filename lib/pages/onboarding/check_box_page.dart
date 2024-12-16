@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/birth_details.dart';
-import 'dateOfBirth.dart';
+import '../../models/birth_details.dart';
+import '../kundali/dateOfBirth.dart';
 
 class CheckBoxPage extends StatefulWidget {
   const CheckBoxPage({super.key});

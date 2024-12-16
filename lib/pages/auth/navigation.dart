@@ -1,10 +1,12 @@
-import 'package:chakravyuh/pages/user_profile.dart';
+// import 'package:chakravyuh/pages/demo_kundali.dart';
+import 'package:chakravyuh/pages/dashboard/user_profile.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
-import 'compatibility_page.dart';
-import 'horoscopeNoLogin.dart';
-import 'kundali_page.dart';
+import '../../models/partner_details.dart';
+import '../features/compatibility_page.dart';
+import '../features/horoscopeNoLogin.dart';
+import '../features/kundali_page.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -18,13 +20,26 @@ class _NavigationState extends State<Navigation> {
 
   // Define a list of pages for each tab
   final List<Widget> _pages = [
-    UserProfile(),
-    HoroscopePage(),
+    UserProfile(
+      userId: '',
+    ),
+    HoroscopePage(
+      userId: '',
+    ),
     KundaliPage(
-      birthDetails: {},
+      userId: '',
       // birthDetails: null,
     ),
-    CompatibilityPage(),
+    CompatibilityPage(
+      partnerDetails: PartnerDetails(
+        birthDate: DateTime.now(),
+        birthTime: TimeOfDay(hour: 0, minute: 0),
+        latitude: 0.0,
+        longitude: 0.0,
+        timezone: '',
+        // userDetails: null,
+      ),
+    )
   ];
 
   @override

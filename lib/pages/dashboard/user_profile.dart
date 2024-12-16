@@ -1,21 +1,65 @@
-import 'package:chakravyuh/pages/home_page.dart';
-import 'package:chakravyuh/pages/horoscopeNoLogin.dart';
-import 'package:chakravyuh/pages/kundali_page.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:chakravyuh/models/user_profile_details.dart';
+import 'package:chakravyuh/pages/features/horoscopeNoLogin.dart';
+import 'package:chakravyuh/pages/onboarding/home_page.dart';
+import 'package:chakravyuh/services/api_call_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'compatibility_page.dart';
-import 'login.dart';
+// import '../../compatibility_page.dart';
+// import '../../login.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+  // final FirebaseUser user;
+  // final BirthDetails birthDetails;
+  final String userId;
+  const UserProfile({
+    super.key,
+    required this.userId,
+    // required this.birthDetails,
+    // required this.user
+  });
 
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
 
 class _UserProfileState extends State<UserProfile> {
+  // // final KundaliService kundaliService = KundaliService();
+
+  // // Map<String, dynamic>? profileData; // Store the fetched profile data
+  // // bool isLoading = true; // To show a loading indicator
+  // late Future<KundaliData> fetchProfileData;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   fetchProfileData =
+  //       KundaliService().fetchKundaliData(widget.userId).then((data) {
+  //     return KundaliData.fromJson(data);
+  //   });
+  // }
+  late Future<KundaliData> futureKundaliData; // Future to fetch profile data
+
+  @override
+  void initState() {
+    super.initState();
+    futureKundaliData = fetchProfileData(); // Initialize fetching of data
+  }
+
+  Future<KundaliData> fetchProfileData() async {
+    try {
+      final data = await KundaliService().fetchKundaliData(widget.userId);
+      // Create the KundaliData instance using fetched data
+      return KundaliData.fromJson({
+        ...data,
+        'username': data['username'], // Ensure username is included
+        'dob': data['dob'], // Ensure dob is included
+      });
+    } catch (e) {
+      throw Exception('Failed to fetch profile data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +120,7 @@ class _UserProfileState extends State<UserProfile> {
                   await FirebaseAuth.instance.signOut(); // Sign out user
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Logged out successfully')),
@@ -97,49 +141,71 @@ class _UserProfileState extends State<UserProfile> {
           ),
         ],
       ),
+      body: FutureBuilder<KundaliData>(
+        future: futureKundaliData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          } else if (snapshot.hasData) {
+            final data = snapshot.data!;
+            return _buildUserProfileContent(data);
+          } else {
+            return const Center(child: Text('No data available'));
+          }
+        },
+      ),
+    );
+  }
 
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF071223),
-              Color(0xFF071223),
-              // Color(0xFF1A2C5B),
-            ],
-            // center: Alignment.center,
-            // radius: 0.5,
-          ),
+  Widget _buildUserProfileContent(KundaliData data) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF071223),
+            Color(0xFF071223),
+            // Color(0xFF1A2C5B),
+          ],
+          // center: Alignment.center,
+          // radius: 0.5,
         ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _welcomeMessage(),
-                const SizedBox(height: 20),
-                _buildProfileCard(),
-                const SizedBox(height: 20),
-                _buildDailyHighlights(),
-                const SizedBox(height: 20),
-                _buildHoroscopeSection(),
-                const SizedBox(height: 20),
-                _buildHoroscopeSection(),
-              ],
-            ),
+      ),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _welcomeMessage(),
+              const SizedBox(height: 20),
+              _buildProfileCard(data),
+              const SizedBox(height: 20),
+              _buildDailyHighlights(),
+              const SizedBox(height: 20),
+              _buildHoroscopeSection(),
+              const SizedBox(height: 20),
+              _buildHoroscopeSection(),
+            ],
           ),
         ),
       ),
-      // bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
   Widget _welcomeMessage() {
-    return const Center(
+    return Center(
       child: Column(
         children: [
           Text(
-            "Welcome, Simrika!",
+            "Welcome, User",
+            // "Welcome, ${profileData?['name'] ?? 'User'}!",
             style: TextStyle(
               color: Color(0xFFBCC4FF), // Starry Gold
               fontSize: 20,
@@ -158,7 +224,7 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  Widget _buildProfileCard() {
+  Widget _buildProfileCard(KundaliData data) {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF142850), // Box background color
@@ -211,17 +277,20 @@ class _UserProfileState extends State<UserProfile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildProfileDetail("Sun Sign", "Leo"),
+                  _buildProfileDetail(
+                      "Zodiac Sign", data.planets['Moon']?.sign ?? '-'),
                   const SizedBox(
                     width: 120,
                   ),
-                  _buildProfileDetail("Moon Sign", "Capricorn"),
+                  _buildProfileDetail(
+                      "Ruling Planet", data.ruling_planet ?? '-'),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildProfileDetail("Ruling Planet", "Saturn"),
+                  _buildProfileDetail(
+                      "Sun Sign", data.planets["Sun"]?.sign ?? '-'),
                   const SizedBox(
                     width: 10,
                   ),
@@ -244,26 +313,27 @@ class _UserProfileState extends State<UserProfile> {
                   const SizedBox(
                     width: 10,
                   ),
-                  _buildProfileDetail("Ascendant", "Aries"),
+                  _buildProfileDetail("Ascendant", data.ascendant.sign ?? '-'),
                 ],
               ),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildProfileDetail("Ruling Planet", "Saturn"),
+                  _buildProfileDetail("Strength", data.zodiac_quality ?? '-'),
                   const SizedBox(
                     width: 100,
                   ),
-                  _buildProfileDetail("Ascendant", "Aries"),
+                  _buildProfileDetail("Weakness", data.zodiac_weakness ?? '-'),
                 ],
               ),
               const SizedBox(
                 height: 30,
               ),
-              const Text(
+              Text(
                 "March 16, 2004",
-                style: TextStyle(
+                // data.dob ?? 'Date of Birth not available',
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -322,7 +392,7 @@ class _UserProfileState extends State<UserProfile> {
                 CircleAvatar(
                   radius: 30,
                   backgroundImage: AssetImage(
-                      'assets/images/capricon.png'), // Replace with your image asset
+                      'assets/images/time.png'), // Replace with your image asset
                 ),
                 SizedBox(width: 16),
                 Expanded(
@@ -347,7 +417,9 @@ class _UserProfileState extends State<UserProfile> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const HoroscopePage()),
+                        builder: (context) => HoroscopePage(
+                              userId: '',
+                            )),
                   ); // Handle "Know More" action
                 },
                 child: const Text("Know More"),
@@ -434,21 +506,4 @@ class _UserProfileState extends State<UserProfile> {
       ),
     );
   }
-
-  // Widget _buildBottomNavigationBar() {
-  //   return ConvexAppBar(
-  //     style: TabStyle.react,
-  //     backgroundColor: const Color(0xFF071223), // Dark Blue
-  //     activeColor: const Color(0xFF5D3FD3),
-  //     color: const Color(0xFFBCC4FF),
-  //     shadowColor: Colors.black26,
-  //     items: const [
-  //       TabItem(icon: Icons.home, title: "Home"),
-  //       TabItem(icon: Icons.star, title: "Horoscope"),
-  //       TabItem(icon: Icons.grid_view, title: "Kundali"),
-  //       TabItem(icon: Icons.favorite, title: "Compatibility"),
-  //       // TabItem(icon: Icons.person, title: "Profile"),
-  //     ],
-  //   );
-  // }
 }
